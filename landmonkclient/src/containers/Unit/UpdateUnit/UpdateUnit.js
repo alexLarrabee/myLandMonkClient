@@ -5,53 +5,58 @@ import { connect } from 'react-redux';
 import * as repositoryActions from '../../../store/actions/repositoryActions';
 import * as errorHandlerActions from '../../../store/actions/errorHandlerActions';
 import Logo from '../../../img/LandMonk-Logo---transparent-bkg---215x218.jpg'
-import NumberFormat from 'react-number-format';
 
-class EditTenant extends Component {
+
+class UpdateUnit extends Component {
     state = {
-        tenantForm: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            cellPhone: ''
+        unitForm: {
+            unitName: '',
+            bedroomCount: '',
+            bathroomCount: '',
+            squareFootage: '',
+            propertyId: ''
         }
     }
 
     componentDidMount() {
         let id = this.props.match.params.id;
-        let url = '/api/tenant/' + id;
-        this.props.onGetTenantById(url, { ...this.props });
+        let url = '/api/units/' + id;
+        this.props.onGetUnitById(url, { ...this.props });
     }
 
     handleChangeEvent = (e) => {
-        const updatedTenantForm = { ...this.state.tenantForm };
-        updatedTenantForm[e.target.id] = e.target.value
-        this.setState({ tenantForm: updatedTenantForm });
+
+        console.log(this.state.unitForm.propertyId);
+        const updatedUnitForm = { ...this.state.unitForm };
+        updatedUnitForm[e.target.id] = e.target.value
+        this.setState({ unitForm: updatedUnitForm });
     }
 
     componentWillReceiveProps = (nextProps) => {
-        const updatedTenantForm = { ...this.state.tenantForm };
+        const updatedUnitForm = { ...this.state.unitForm };
 
-        updatedTenantForm.firstName = nextProps.data.firstName;
-        updatedTenantForm.lastName = nextProps.data.lastName;
-        updatedTenantForm.email = nextProps.data.email;
-        updatedTenantForm.cellPhone = nextProps.data.cellPhone;
-
-        this.setState({ tenantForm: updatedTenantForm });
+        updatedUnitForm.unitName = nextProps.data.unitName;
+        updatedUnitForm.bedroomCount = nextProps.data.bedroomCount;
+        updatedUnitForm.bathroomCount = nextProps.data.bathroomCount;
+        updatedUnitForm.squareFootage = nextProps.data.squareFootage;
+        updatedUnitForm.propertyId = nextProps.data.propertyId;
+        
+        this.setState({ unitForm: updatedUnitForm }); 
     }
 
-    updateTenant = (event) => {
+    updateUnit = (event) => {
         event.preventDefault();
 
-        const tenantToUpdate = {
-            firstName: this.state.tenantForm.firstName,
-            lastName: this.state.tenantForm.lastName,
-            email: this.state.tenantForm.email,
-            cellPhone: this.state.tenantForm.cellPhone,
+        const unitToUpdate = {
+            unitName: this.state.unitForm.unitName,
+            bedroomCount: parseInt(this.state.unitForm.bedroomCount),
+            bathroomCount: parseFloat(this.state.unitForm.bathroomCount),
+            squareFootage: parseInt(this.state.unitForm.squareFootage),
+            propertyId: parseInt(this.state.unitForm.propertyId)
         }
 
-        const url = '/api/tenant/' + this.props.data.id;
-        this.props.onUpdateTenant(url, tenantToUpdate, { ...this.props });
+        const url = '/api/units/' + this.props.data.id;
+        this.props.onUpdateUnit(url, unitToUpdate, { ...this.props });
     }
 
     redirectToOwnerList = () => {
@@ -67,7 +72,7 @@ class EditTenant extends Component {
                     <div className="row">
                         <div className="col-12">
                             <div className="page-title-box">
-                                <h4 className="page-title">Edit Tenant</h4>
+                                <h4 className="page-title">Edit Unit</h4>
                             </div>
                         </div>
                     </div>
@@ -78,47 +83,36 @@ class EditTenant extends Component {
                         <div className="col-8">
                             <div className="card">
                                 <div className="card-body">
-                                    <h4 className="header-title">Tenant Info</h4>
+                                    <h4 className="header-title">Unit Info</h4>
 
-                                    <form onSubmit={e => this.updateTenant(e)}>
+                                    <form onSubmit={e => this.updateUnit(e)}>
                                         <div className="form-row">
                                             <div className="form-group col-md-6">
-                                                <label htmlFor="firstName" className="col-form-label">First Name</label>
+                                                <label htmlFor="unitName" className="col-form-label">Unit Name</label>
                                                 <input type="text" required
-                                                    value={this.state.tenantForm.firstName} onChange={e => this.handleChangeEvent(e)} className="form-control" id="firstName" />
+                                                    value={this.state.unitForm.unitName} onChange={e => this.handleChangeEvent(e)} className="form-control" id="unitName" />
                                             </div>
                                             <div className="form-group col-md-6">
-                                                <label htmlFor="lastName" className="col-form-label">Last Name</label>
+                                                <label htmlFor="bedroomCount" className="col-form-label">Beds</label>
                                                 <input type="text" required
-                                                    value={this.state.tenantForm.lastName} onChange={e => this.handleChangeEvent(e)} className="form-control" id="lastName" />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-row">
-                                            <div className="form-group col-md-6">
-                                                <label htmlFor="email" className="col-form-label">email</label>
-                                                <input type="text" required
-                                                    value={this.state.tenantForm.email} onChange={e => this.handleChangeEvent(e)} className="form-control" id="email" />
+                                                    value={this.state.unitForm.bedroomCount} onChange={e => this.handleChangeEvent(e)} className="form-control" id="bedroomCount" />
                                             </div>
                                         </div>
 
                                         <div className="form-row">
                                             <div className="form-group col-md-6">
-                                                <label htmlFor="cellPhone" className="col-form-label">Cell Phone</label>
-                                                
-                                                <NumberFormat 
-                                                    type="tel" 
-                                                    required
-                                                    value={this.state.tenantForm.cellPhone} 
-                                                    onChange={e => this.handleChangeEvent(e)} 
-                                                    className="form-control" 
-                                                    id="cellPhone" 
-                                                    placeholder="###-###-####"
-                                                    format="###-###-####" 
-                                                    mask="_"/>
+                                                <label htmlFor="bathroomCount" className="col-form-label">Baths</label>
+                                                <input type="text" required
+                                                    value={this.state.unitForm.bathroomCount} onChange={e => this.handleChangeEvent(e)} className="form-control" id="bathroomCount" />
+                                            </div>
+                                        </div>
 
-                                                {/* <input type="text" required
-                                                    value={this.state.tenantForm.cellPhone} onChange={e => this.handleChangeEvent(e)} className="form-control" id="cellPhone" /> */}
+                                        <div className="form-row">
+                                            <div className="form-group col-md-6">
+                                                <label htmlFor="squareFootage" className="col-form-label">Sq Ft</label>
+                                                <input type="text" required
+                                                    value={this.state.unitForm.squareFootage} onChange={e => this.handleChangeEvent(e)} className="form-control" id="squareFootage" />
+                                    
                                             </div>
                                         </div>
 
@@ -136,9 +130,9 @@ class EditTenant extends Component {
 
                     <SuccessModal show={this.props.showSuccessModal}
                         modalHeaderText={'Success!'}
-                        modalBodyText={'Tenant updated'}
+                        modalBodyText={'Unit updated'}
                         okButtonText={'OK'}
-                        successClick={() => this.props.onCloseSuccessModal('/tenants', { ...this.props })} />
+                        successClick={() => this.props.onCloseSuccessModal('/propertyDetails/'+ this.state.unitForm.propertyId , { ...this.props })} />
 
                     <ErrorModal show={this.props.showErrorModal}
                         modalHeaderText={'Error!'}
@@ -161,11 +155,13 @@ const mapStateToProps = (state) => {
 
 const mapPropsToDispatch = dispatch => {
     return {
-        onGetTenantById: (url, props) => dispatch(repositoryActions.getData(url, props)),
-        onUpdateTenant: (url, tenant, props) => dispatch(repositoryActions.putData(url, tenant, props)),
+        onGetUnitById: (url, props) => dispatch(repositoryActions.getData(url, props)),
+        onUpdateUnit: (url, unit, props) => dispatch(repositoryActions.putData(url, unit, props)),
         onCloseSuccessModal: (url, props) => dispatch(repositoryActions.closeSuccessModal(props, url)),
         onCloseErrorModal: () => dispatch(errorHandlerActions.closeErrorModal())
     }
 }
 
-export default connect(mapStateToProps, mapPropsToDispatch)(EditTenant);
+export default connect(mapStateToProps, mapPropsToDispatch)(UpdateUnit);
+
+// this.props.match.params.id

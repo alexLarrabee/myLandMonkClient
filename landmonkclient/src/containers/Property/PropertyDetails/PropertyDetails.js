@@ -11,13 +11,13 @@ class PropertyDetails extends Component {
     componentDidMount() {
         let id = this.props.match.params.id;
         let url = '/api/property/' + id + '/unit';
-        this.props.onGetData(url, { ...this.props});
+        this.props.onGetData(url, { ...this.props });
     }
- 
-    render() { 
+
+    render() {
         let property = { ...this.props.data };
 
-        return ( 
+        return (
             <Aux>
                 <div className="wrapper">
                     <div className="container-fluid">
@@ -27,20 +27,23 @@ class PropertyDetails extends Component {
                                 <div className="page-title-box">
                                     <div className="page-title-right">
                                         <Link to='/createProperty'>
-                                            <button className="btn btn-primary">Add Property</button>
+                                            <button className="btn btn-primary add-property">Add Property</button>
                                         </Link>
                                     </div>
                                     <h4 className="page-title">Property Details</h4>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                         {/* <!-- end page title --> */}
                         <Property property={property} {...this.props} />
-                        <PropertyUnits units={property.units} />
+                        <Link className="btn btn-primary  add-unit" to={`/propertyDetails/${this.props.match.params.id}/createUnit`}>
+                            Add Unit
+                        </Link>
+                        <PropertyUnits units={property.units} history={this.props.history} />
                     </div>
                 </div>
             </Aux>
-         );
+        );
     }
 }
 

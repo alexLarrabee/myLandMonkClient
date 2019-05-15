@@ -10,7 +10,8 @@ class TenantList extends Component {
 
         tenantFilter: [],
         sortFirst: true,
-        sortLast: true
+        sortLast: true,
+        sortEmail: true
 
     }
 
@@ -131,6 +132,42 @@ class TenantList extends Component {
 
     }
 
+    sortEmailAddress = () => {
+
+        let sortList = this.state.tenantFilter;
+
+        if (this.state.sortEmail) {
+
+            sortList.sort((b, a) => a.email.localeCompare(b.email));
+
+
+            this.setState({
+
+                tenantFilter: sortList,
+                sortEmail: false
+
+            })
+
+        }
+
+        if (this.state.sortEmail === false) {
+         
+
+            sortList.sort((a, b) => a.email.localeCompare(b.email));
+
+            this.setState({
+
+                tenantFilter: sortList,
+                sortEmail: true
+
+            })
+
+
+        }
+
+
+    }
+
 
 
 
@@ -149,7 +186,6 @@ class TenantList extends Component {
             })
 
         }
-
 
         return (
 
@@ -184,9 +220,9 @@ class TenantList extends Component {
                                     <table id="basic-datatable" className="table table-striped dt-responsive nowrap">
                                         <thead>
                                             <tr>
-                                                <th className="firstName" style={{cursor:'pointer'}} title="Toggle First Name Alphabetically, Ascending or Decending" onClick={this.sortFirstName}>First Name</th>
-                                                <th style={{cursor:'pointer'}} title="Toggle Last Name Alphabetically, Ascending or Decending" onClick={this.sortLastName}>Last Name</th>
-                                                <th>Email</th>
+                                                <th style={{cursor: 'pointer'}} className="firstName" title="Toggle First Name Alphabetically, Ascending or Decending" onClick={this.sortFirstName}>First Name</th>
+                                                <th style={{cursor: 'pointer'}} title="Toggle Last Name Alphabetically, Ascending or Decending" onClick={this.sortLastName}>Last Name</th>
+                                                <th style={{cursor: 'pointer'}} title="Toggle Email List Alphabetically, Ascending or Decending" onClick={this.sortEmailAddress}>Email</th>
                                                 <th>Cell Phone</th>
                                             </tr>
                                         </thead>
